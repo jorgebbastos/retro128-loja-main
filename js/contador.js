@@ -7,6 +7,7 @@
  */
 
 const historicoContador = [];
+const LIMITE_HISTORICO_CONTADOR = 180;
 
 function formatarTempo(ms) {
   const total = Math.floor(ms / 1000);
@@ -21,7 +22,6 @@ function formatarTempo(ms) {
 function iniciarContador(campanha) {
   const banner = document.getElementById('banner-bf');
   const alvo = banner.querySelector('.bf-tempo');
-  const vitrine = document.getElementById('vitrine');
   const fim = new Date(campanha.fim).getTime();
   banner.hidden = false;
 
@@ -29,11 +29,13 @@ function iniciarContador(campanha) {
 
   function tick() {
     const restante = Math.max(0, fim - Date.now());
+    if (historicoContador.length >= LIMITE_HISTORICO_CONTADOR) {
+      historicoContador.shift();
+    }
     historicoContador.push({
       instante: Date.now(),
       restante: restante,
-      jogos: JOGOS.map((jogo) => ({ ...jogo })),
-      vitrine: vitrine.cloneNode(true)
+      jogos: JOGOS.map((jogo) => ({ id: jogo.id, preco: jogo.preco }))
     });
     Observabilidade.contar('contador_ticks');
     alvo.innerHTML = formatarTempo(restante);

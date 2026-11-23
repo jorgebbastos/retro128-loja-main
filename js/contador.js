@@ -45,5 +45,5 @@ function iniciarContador(campanha) {
   Observabilidade.info('CONTADOR_INICIADO', 'Contador da Black Friday ativo', {
     fim: campanha.fim, intervalo: campanha.intervaloContadorSegundos
   });
-  return setInterval(tick, campanha.intervaloContadorSegundos);
+  return setInterval(tick, campanha.intervaloContadorSegundos * 1000);
 }
